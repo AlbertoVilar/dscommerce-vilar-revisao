@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 @Entity
-@Table(name = "tb_products")
+@Table(name = "tb_product")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -21,7 +21,7 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
     private Double price;
-    private String imgUri;
+    private String imgUrl;
 
     @ManyToMany
     @JoinTable(name = "tb_product_category",
@@ -33,6 +33,6 @@ public class Product {
     private Set<OrderItem> items = new HashSet<>();
 
     public List<Order> getOrder() {
-        return items.stream().map(x -> x.getOrder()).toList();
+        return items.stream().map(x -> x.getOrderPK()).toList();
     }
 }

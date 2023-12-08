@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "tb_orders")
+@Table(name = "tb_order")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -38,6 +38,6 @@ public class Order {
    private Set<OrderItem> items = new HashSet<>();
 
 public List<Product>  getProducts(){
-    return items.stream().map(x -> x.getProduct()).toList();
+    return items.stream().map(x -> x.getProductPK()).toList();
     }
 }

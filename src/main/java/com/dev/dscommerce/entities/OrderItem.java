@@ -6,7 +6,7 @@ import jakarta.persistence.Table;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tb_orders_items")
+@Table(name = "tb_order_item")
 @NoArgsConstructor
 public class OrderItem {
 
@@ -23,8 +23,17 @@ public class OrderItem {
         this.price = price;
     }
 
+    public Order getOrderPK() {
 
-    public Product getProduct() {
+        return id.getOrderPK();
+    }
+
+    public void setOrderPK(Order order) {
+
+        id.setOrderPK(order);
+    }
+
+    public Product getProductPK() {
 
         return id.getProductPK();
     }
@@ -32,16 +41,6 @@ public class OrderItem {
     public void setProduct(Product product) {
 
         id.setProductPK(product);
-    }
-
-    public Order getOrder() {
-
-        return id.getOrderPK();
-    }
-
-    public void setOrder(Order order) {
-
-        id.setOrderPK(order);
     }
 
     public Integer getQuantity() {
