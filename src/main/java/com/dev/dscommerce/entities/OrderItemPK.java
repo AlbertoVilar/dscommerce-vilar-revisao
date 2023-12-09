@@ -6,6 +6,9 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Objects;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -19,6 +22,16 @@ public class OrderItemPK {
     private Product productPK;
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderItemPK that = (OrderItemPK) o;
+        return Objects.equals(orderPK, that.orderPK) && Objects.equals(productPK, that.productPK);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderPK, productPK);
+    }
 }

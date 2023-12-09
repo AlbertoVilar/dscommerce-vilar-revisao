@@ -1,10 +1,7 @@
 package com.dev.dscommerce.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -18,6 +15,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
