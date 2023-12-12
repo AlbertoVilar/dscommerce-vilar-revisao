@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @Controller
 @RequestMapping(value = "/products")
@@ -42,7 +45,9 @@ public class ProductController {
     public ResponseEntity<ProductDTO> insertProduct(@RequestBody ProductDTO dto) {
 
         dto  = service.insertProduct(dto);
-        return ResponseEntity.ok(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 
 }
