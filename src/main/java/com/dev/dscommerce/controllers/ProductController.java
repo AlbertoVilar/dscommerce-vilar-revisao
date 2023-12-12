@@ -4,14 +4,13 @@ import com.dev.dscommerce.dto.ProductDTO;
 import com.dev.dscommerce.services.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping(value = "/product")
+@RequestMapping(value = "/products")
 public class ProductController {
 
     private ProductService service;
@@ -27,9 +26,23 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> findById(Pageable pageable) {
+    public ResponseEntity<Page<ProductDTO>> findByPage(Pageable pageable) {
         Page<ProductDTO> product  = service.findByPage(pageable);
         return ResponseEntity.ok(product);
+    }
+
+    @GetMapping("/findByName")
+    public ResponseEntity<Page<ProductDTO>> findByName(
+            @RequestParam(value = "name", defaultValue = "") String name, Pageable pageable) {
+       Page<ProductDTO> dto = service.findByName(name, pageable);
+       return ResponseEntity.ok(dto);
+
+    }
+    @PostMapping
+    public ResponseEntity<ProductDTO> insertProduct(@RequestBody ProductDTO dto) {
+
+        dto  = service.insertProduct(dto);
+        return ResponseEntity.ok(dto);
     }
 
 }

@@ -1,10 +1,10 @@
 package com.dev.dscommerce.dto;
 
 import com.dev.dscommerce.entities.Product;
-import jakarta.persistence.Column;
+import lombok.NoArgsConstructor;
 
 import java.util.Optional;
-
+@NoArgsConstructor
 public class ProductDTO {
 
     private Long id;
