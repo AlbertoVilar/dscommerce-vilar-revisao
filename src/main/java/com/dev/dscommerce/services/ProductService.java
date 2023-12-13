@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -39,9 +40,34 @@ public class ProductService {
 
     @Transactional
     public ProductDTO insertProduct(ProductDTO dto) {
-        Product entity = ProducMapper.toProduct(dto);
+
+        Product entity = new Product();
+        ProducMapper.copyDTOToProduct(dto, entity);
         entity = repository.save(entity);
+
         return new ProductDTO(entity);
+
+    }
+
+    @Transactional
+    public ProductDTO update(Long id, ProductDTO dto) {
+
+        //Creating a Product by id referenced by JPA
+        Product entity = repository.getReferenceById(id);
+        ProducMapper.copyDTOToProduct(dto, entity);
+
+        entity = repository.save(entity);
+
+        return new ProductDTO(entity);
+
+    }
+
+    @Transactional
+    public void deleteProduct(Long id) {
+
+
+        repository.deleteById(id);
+
 
     }
 
