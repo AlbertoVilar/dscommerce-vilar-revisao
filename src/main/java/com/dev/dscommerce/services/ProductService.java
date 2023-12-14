@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -21,8 +22,10 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
+
         //Optional<Product> result = repositry.findById(id); **findById sempre retorna o Optional da entidade passada;
-        Product product = repository.findById(id).get();
+        Product product = repository.findById(id)
+                     .orElseThrow(() -> new ResourceNotFoundException("Recurso não Encontrado"));
         return new ProductDTO(product);
     }
 
@@ -54,21 +57,17 @@ public class ProductService {
 
         //Creating a Product by id referenced by JPA
         Product entity = repository.getReferenceById(id);
+
         ProducMapper.copyDTOToProduct(dto, entity);
 
         entity = repository.save(entity);
-
         return new ProductDTO(entity);
 
     }
 
     @Transactional
     public void deleteProduct(Long id) {
-
-
         repository.deleteById(id);
 
-
     }
-
 }
