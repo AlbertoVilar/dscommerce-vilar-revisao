@@ -1,5 +1,6 @@
 package com.dev.dscommerce.entities;
 
+import com.dev.dscommerce.dto.CategoryDTO;
 import com.dev.dscommerce.dto.ProductDTO;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,6 +26,16 @@ public class ProducMapper {
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
+
+        entity.getCategories().clear();
+
+        for (CategoryDTO catDTO : dto.getCategories()){
+           Category cat = new Category();
+           cat.setId(catDTO.getId());
+           cat.setName(catDTO.getName());
+
+           entity.getCategories().add(cat);
+        }
 
 
     }

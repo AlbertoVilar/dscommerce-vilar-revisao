@@ -31,7 +31,7 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Recurso não Encontrado"));
         return new ProductDTO(product);
     }
-
+@Transactional(readOnly = true)
     public Page<ProductDTO> findByPage(Pageable pageable) {
         Page<Product> pages = repository.findAll(pageable);
         return pages.map(x -> new ProductDTO(x));

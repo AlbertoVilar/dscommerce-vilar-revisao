@@ -1,13 +1,13 @@
 package com.dev.dscommerce.dto;
 
+import com.dev.dscommerce.entities.Category;
 import com.dev.dscommerce.entities.Product;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 @NoArgsConstructor
 public class ProductDTO {
@@ -22,6 +22,8 @@ public class ProductDTO {
     @Positive(message = "O preço não pode ser negativo")
     private Double price;
     private String imgUrl;
+    @NotEmpty(message = "Deve conter ao menos uma categoria")
+    List<CategoryDTO> categories = new ArrayList<>();
 
     public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {
         this.id = id;
@@ -32,11 +34,14 @@ public class ProductDTO {
     }
 
     public ProductDTO(Product product) {
-        this.id = product.getId();
-        this.name = product.getName();
-        this.description = product.getDescription();
-        this.price = product.getPrice();
-        this.imgUrl = product.getImgUrl();
+        id = product.getId();
+        name = product.getName();
+        description = product.getDescription();
+        price = product.getPrice();
+        imgUrl = product.getImgUrl();
+        for (Category cat : product.getCategories()) {
+            categories.add(new CategoryDTO(cat));
+        }
     }
 
     public Long getId() {
@@ -77,5 +82,9 @@ public class ProductDTO {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public List<CategoryDTO> getCategories() {
+        return categories;
     }
 }
