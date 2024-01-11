@@ -1,6 +1,7 @@
 package com.dev.dscommerce.controllers;
 
 import com.dev.dscommerce.dto.ProductDTO;
+import com.dev.dscommerce.dto.ProductMinDTO;
 import com.dev.dscommerce.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -36,9 +37,9 @@ public class ProductController {
     }
 
     @GetMapping("/findByName")
-    public ResponseEntity<Page<ProductDTO>> findByName(
+    public ResponseEntity<Page<ProductMinDTO>> findByName(
             @RequestParam(value = "name", defaultValue = "") String name, Pageable pageable) {
-        Page<ProductDTO> dto = service.findByName(name, pageable);
+        Page<ProductMinDTO> dto = service.findByName(name, pageable);
         return ResponseEntity.ok(dto);
 
     }
