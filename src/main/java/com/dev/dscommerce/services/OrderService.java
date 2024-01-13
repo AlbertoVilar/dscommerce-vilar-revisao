@@ -1,11 +1,11 @@
 package com.dev.dscommerce.services;
 
 import com.dev.dscommerce.dto.OrderDTO;
+import com.dev.dscommerce.dto.OrderItemDTO;
 import com.dev.dscommerce.dto.ProductDTO;
 import com.dev.dscommerce.dto.ProductMinDTO;
-import com.dev.dscommerce.entities.Order;
-import com.dev.dscommerce.entities.ProducMapper;
-import com.dev.dscommerce.entities.Product;
+import com.dev.dscommerce.entities.*;
+import com.dev.dscommerce.repositories.OrderItemRepository;
 import com.dev.dscommerce.repositories.OrderRepository;
 import com.dev.dscommerce.repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,10 +17,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+
 @Service
 public class OrderService {
     @Autowired
     private OrderRepository repository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private UserService userService; // With this injection I can use the User Authenticated
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @Transactional(readOnly = true)
     public OrderDTO findById(Long id) {
@@ -31,4 +39,25 @@ public class OrderService {
         return new OrderDTO(order);
     }
 
+    @Transactional
+    public OrderDTO insertOrder(OrderDTO dto) {
+
+        Order order = new Order();
+        order.setMoment(Instant.now());
+        order.setStatus(OrderStatus.WEITING_PAYMENT);
+
+        User user = userService.authenticated();
+        order.setClient(user);
+
+        for (OrderItemDTO itemDTO : dto.getItems()) {
+
+            Product product = productRepository.getReferenceById(itemDTO.getProductId());
+            OrderItem orderItem = new OrderItem(order, product, itemDTO.getQuantity(), product.getPrice());
+
+            order.getItems().add(orderItem);
+        }
+        repository.save(order);
+        orderItemRepository.saveAll(order.getItems());
+        return new OrderDTO(order);
+    }
 }

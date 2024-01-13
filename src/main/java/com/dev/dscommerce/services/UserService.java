@@ -43,6 +43,7 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    //authenticated get the loged user.
     protected User authenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
@@ -51,7 +52,8 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Email not found"));
         return user;
     }
-@Transactional(readOnly = true)
+
+    @Transactional(readOnly = true)
     public UserDTO getUserLoged() {
         User user = authenticated();
         return new UserDTO(user);
