@@ -4,6 +4,7 @@ import com.dev.dscommerce.customerrors.CustomError;
 import com.dev.dscommerce.dto.FildMessage;
 import com.dev.dscommerce.dto.ValidationError;
 import com.dev.dscommerce.services.DataBaseException;
+import com.dev.dscommerce.services.ForbbidenException;
 import com.dev.dscommerce.services.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,13 @@ public class ControllerExceptionHandler {
             err.addError(f.getField(), f.getDefaultMessage());
         }
 
+        return ResponseEntity.status(status).body(err);
+    }
+    @ExceptionHandler
+            (ForbbidenException.class)
+    public ResponseEntity<CustomError> forbbiden(ForbbidenException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 }

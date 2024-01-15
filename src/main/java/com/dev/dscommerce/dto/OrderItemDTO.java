@@ -7,18 +7,22 @@ public class OrderItemDTO {
     private String name;
     private Double price;
     private Integer quantity;
+    private String umgUrl;
 
-    public OrderItemDTO(Long productId, String name, Double price, Integer quantity) {
+    public OrderItemDTO(Long productId, String name, Double price, Integer quantity, String umgUrl) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+        this.umgUrl = umgUrl;
     }
+
     public OrderItemDTO(OrderItem entity) {
         productId = entity.getProductPK().getId();
         name = entity.getProductPK().getName();
         price = entity.getPrice();
         quantity = entity.getQuantity();
+        umgUrl = entity.getProductPK().getImgUrl();
     }
 
     public Long getProductId() {
@@ -47,6 +51,10 @@ public class OrderItemDTO {
 
     public Integer getQuantity() {
         return quantity;
+    }
+
+    public String getUmgUrl() {
+        return umgUrl;
     }
 
     public void setQuantity(Integer quantity) {

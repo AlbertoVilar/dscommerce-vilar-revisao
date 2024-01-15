@@ -29,6 +29,8 @@ public class OrderService {
     private UserService userService; // With this injection I can use the User Authenticated
     @Autowired
     private OrderItemRepository orderItemRepository;
+    @Autowired
+    private AuthService authService;
 
     @Transactional(readOnly = true)
     public OrderDTO findById(Long id) {
@@ -36,6 +38,7 @@ public class OrderService {
         //Optional<Product> result = repositry.findById(id); **findById sempre retorna o Optional da entidade passada;
         Order order = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Recurso não Encontrado"));
+        authService.validateSelfOrAdmin(order.getClient().getId());
         return new OrderDTO(order);
     }
 

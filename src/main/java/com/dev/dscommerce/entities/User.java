@@ -105,6 +105,16 @@ private Set<Role> roles = new HashSet<>();
         return roles;
     }
 
+    public  boolean hasHole(String roleName) {
+        for (Role role : roles) {
+
+            if (role.getAuthority().equals(roleName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addRole(Role role) {
         roles.add(role);
     }
