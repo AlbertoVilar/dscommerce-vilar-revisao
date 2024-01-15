@@ -4,7 +4,6 @@ import com.dev.dscommerce.entities.Category;
 import com.dev.dscommerce.entities.Product;
 import jakarta.validation.constraints.*;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,7 @@ public class ProductDTO {
     @Size(min = 10, message = "A descrição precisa de no mínimo 10 caracteres")
     @NotBlank(message = "Campo requerido")
     private String description;
+    @NotNull(message = "Campo requerido")
     @Positive(message = "O preço não pode ser negativo")
     private Double price;
     private String imgUrl;

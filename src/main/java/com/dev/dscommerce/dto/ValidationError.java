@@ -16,6 +16,9 @@ private List<FildMessage> errors = new ArrayList<>();
     }
 
     public void addError(String fildName, String fildMassage) {
+
+        errors.removeIf(x -> x.getFildName().equals(fildName));
+
         errors.add(new FildMessage(fildName, fildMassage));
     }
 }
